@@ -24,17 +24,16 @@ func fetch(vehicleNumberFlag *string, vehicleTypeFlag *string) *http.Response {
 		"seri":  {*vehicleTypeFlag},
 	}
 
-	response, err := http.NewRequest(http.MethodPost, URL, strings.NewReader(form.Encode()))
-	response.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
+	req, err := http.NewRequest(http.MethodPost, URL, strings.NewReader(form.Encode()))
 	if err != nil {
 		log.Fatalln(err)
 	}
 
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
 	client := &http.Client{}
 
-	result, err := client.Do(response)
-
+	result, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -60,7 +59,6 @@ func main() {
 	response := fetch(vehicleNumberFlag, vehicleTypeFlag)
 
 	doc, err := goquery.NewDocumentFromReader(response.Body)
-
 	if err != nil {
 		log.Fatalln(err)
 	}
