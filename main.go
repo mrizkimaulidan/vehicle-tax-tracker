@@ -13,10 +13,12 @@ import (
 
 const URL = "http://simpator.kaltimprov.go.id/cari.php"
 
-var vehicleNumberFlag = flag.String("nomor", "default", "-nomor=1234")
-var vehicleTypeFlag = flag.String("seri", "default", "-seri=ABCD")
+var (
+	vehicleNumberFlag = flag.String("nomor", "default", "-nomor=1234")
+	vehicleTypeFlag   = flag.String("seri", "default", "-seri=ABCD")
+)
 
-// fetch url to get the html return type
+// Fetch URL to get the html return response
 func fetch(vehicleNumberFlag *string, vehicleTypeFlag *string) *http.Response {
 	form := url.Values{
 		"kt":    {"KT"},
@@ -28,11 +30,9 @@ func fetch(vehicleNumberFlag *string, vehicleTypeFlag *string) *http.Response {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	client := &http.Client{}
-
 	result, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
@@ -41,8 +41,8 @@ func fetch(vehicleNumberFlag *string, vehicleTypeFlag *string) *http.Response {
 	return result
 }
 
-// get value from each input by id
-func getValueFromScraping(doc *goquery.Document, htmlIDs ...string) map[string]string {
+// Get value from html response each input by id
+func getValueFromScraping(doc *goquery.Document, htmlIDs []string) map[string]string {
 	result := map[string]string{}
 
 	for _, htmlID := range htmlIDs {
@@ -72,7 +72,7 @@ func main() {
 		"total",
 	}
 
-	results := getValueFromScraping(doc, htmlIDs...)
+	results := getValueFromScraping(doc, htmlIDs)
 
 	fmt.Println("\nNomor Polisi :", results["nopol"])
 	fmt.Println("Kode Bayar :", results["kode"])
