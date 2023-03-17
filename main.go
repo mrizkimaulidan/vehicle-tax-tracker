@@ -18,7 +18,8 @@ var (
 	vehicleTypeFlag   = flag.String("seri", "default", "-seri=ABCD")
 )
 
-// Fetch URL to get the html return response
+// Fetch request to URL so we can get
+// the HTML return response
 func fetch(vehicleNumberFlag string, vehicleTypeFlag string) *http.Response {
 	form := url.Values{
 		"kt":    {"KT"},
