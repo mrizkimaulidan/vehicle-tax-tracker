@@ -42,7 +42,7 @@ func fetch(vehicleNumberFlag string, vehicleTypeFlag string) *http.Response {
 }
 
 // Get value from html response each input by id
-func getValueFromScraping(doc *goquery.Document, htmlIDs []string) map[string]string {
+func getValueFromScrapedResult(doc *goquery.Document, htmlIDs []string) map[string]string {
 	result := map[string]string{}
 
 	for _, htmlID := range htmlIDs {
@@ -72,7 +72,7 @@ func main() {
 		"total",
 	}
 
-	results := getValueFromScraping(doc, htmlIDs)
+	results := getValueFromScrapedResult(doc, htmlIDs)
 
 	fmt.Println("\nNomor Polisi :", results["nopol"])
 	fmt.Println("Kode Bayar :", results["kode"])
