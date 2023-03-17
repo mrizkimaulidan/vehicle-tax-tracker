@@ -19,11 +19,11 @@ var (
 )
 
 // Fetch URL to get the html return response
-func fetch(vehicleNumberFlag *string, vehicleTypeFlag *string) *http.Response {
+func fetch(vehicleNumberFlag string, vehicleTypeFlag string) *http.Response {
 	form := url.Values{
 		"kt":    {"KT"},
-		"nomor": {*vehicleNumberFlag},
-		"seri":  {*vehicleTypeFlag},
+		"nomor": {vehicleNumberFlag},
+		"seri":  {vehicleTypeFlag},
 	}
 
 	req, err := http.NewRequest(http.MethodPost, URL, strings.NewReader(form.Encode()))
@@ -56,7 +56,7 @@ func getValueFromScraping(doc *goquery.Document, htmlIDs []string) map[string]st
 
 func main() {
 	flag.Parse()
-	response := fetch(vehicleNumberFlag, vehicleTypeFlag)
+	response := fetch(*vehicleNumberFlag, *vehicleTypeFlag)
 
 	doc, err := goquery.NewDocumentFromReader(response.Body)
 	if err != nil {
