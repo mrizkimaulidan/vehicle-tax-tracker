@@ -27,31 +27,33 @@ func fetch(vehicleNumberFlag string, vehicleTypeFlag string) *http.Response {
 	}
 
 	req, err := http.NewRequest(http.MethodPost, URL, strings.NewReader(form.Encode()))
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	if err != nil {
 		log.Fatalln(err)
 	}
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	defer req.Body.Close()
 
 	client := &http.Client{}
-	result, err := client.Do(req)
+	response, err := client.Do(req)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	return result
+	return response
 }
 
-// Get value from html response each input by id
+// Get input value from HTML document response
+// returning array of map input HTML ID
 func getValueFromScrapedResult(doc *goquery.Document, htmlIDs []string) map[string]string {
-	result := map[string]string{}
+	inputValues := map[string]string{}
 
 	for _, htmlID := range htmlIDs {
-		results, _ := doc.Find("#" + htmlID).Attr("value")
+		value, _ := doc.Find("#" + htmlID).Attr("value")
 
-		result[htmlID] += results
+		inputValues[htmlID] += value
 	}
 
-	return result
+	return inputValues
 }
 
 func main() {
